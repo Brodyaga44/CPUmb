@@ -1,7 +1,9 @@
 package com.example.cpumb.InfoReader;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
@@ -67,11 +69,34 @@ public class InfoReader {
         column4.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[3]));
         column5.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[4]));
 
-        VBox vbox = new VBox(tableView);
+        Button removeSelectedButton = new Button("Удалить запись");
+        removeSelectedButton.setOnAction(event -> {
+            String[] selectedRecord = tableView.getSelectionModel().getSelectedItem();
+            if (selectedRecord != null) {
+                tableView.getItems().remove(selectedRecord);
+            }
+        });
+
+        Button addInfoButton = new Button("Добавить больше вариантов");
+        addInfoButton.setOnAction(event -> {
+            String[] selectedRecord = tableView.getSelectionModel().getSelectedItem();
+            if (selectedRecord != null) {
+                    selectedRecord[0] = "1";
+                    selectedRecord[1] = "2";
+                    selectedRecord[2] = "3";
+                    selectedRecord[3] = "4";
+                    selectedRecord[4] = "5";
+
+                tableView.refresh();
+            }
+        });
+
+        VBox vbox = new VBox(tableView, removeSelectedButton, addInfoButton);
         Scene scene = new Scene(vbox, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Подходящие платы");
         primaryStage.show();
     }
+
 
 }
