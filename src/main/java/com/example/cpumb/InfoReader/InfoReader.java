@@ -1,6 +1,8 @@
 package com.example.cpumb.InfoReader;
 
+import com.example.cpumb.SQL.Database;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,95 +10,63 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.apache.poi.ss.usermodel.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class InfoReader {
+    private final String tableName;
+    private final Database db = new Database();
 
-    private String filePath;
-
-    public InfoReader(String filePath) {
-        this.filePath = filePath;
+    public InfoReader(String tableName) {
+        this.tableName = tableName;
     }
 
-
     public void LoadInfo(Stage primaryStage) {
-        TableView<String[]> tableView = new TableView<>();
+        TableView<ObservableList<String>> tableView = new TableView<>();
 
-        TableColumn<String[], String> column1 = new TableColumn<>("Motherboard Name");
-        TableColumn<String[], String> column2 = new TableColumn<>("Form Factor");
-        TableColumn<String[], String> column3 = new TableColumn<>("Chipset Socket");
-        TableColumn<String[], String> column4 = new TableColumn<>("Socket");
-        TableColumn<String[], String> column5 = new TableColumn<>("Max TDP");
-        tableView.getColumns().addAll(column1, column2, column3, column4, column5);
+        try (Connection con = db.getConnection()) {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
+            int columnCount = rs.getMetaData().getColumnCount();
 
-        try (FileInputStream fis = new FileInputStream(new File(filePath))) {
-            Workbook workbook = WorkbookFactory.create(fis);
-            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-                Sheet sheet = workbook.getSheetAt(i);
-
-                List<String[]> data = new ArrayList<>();
-
-                Iterator<Row> rowIterator = sheet.iterator();
-                while (rowIterator.hasNext()) {
-                    Row row = rowIterator.next();
-
-                    String[] rowData = new String[5];
-                    for (int j = 0; j < 5; j++) {
-                        Cell cell = row.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        DataFormatter formatter = new DataFormatter();
-                        rowData[j] = formatter.formatCellValue(cell);
-                    }
-
-                    data.add(rowData);
-                }
-
-                tableView.getItems().addAll(data);
+            for (int i = 1; i <= columnCount; i++) {
+                final int j = i - 1;
+                TableColumn<ObservableList<String>, String> column = new TableColumn<>(rs.getMetaData().getColumnName(i));
+                column.setCellValueFactory(param -> {
+                    ObservableList<String> row = param.getValue();
+                    return javafx.beans.binding.Bindings.createObjectBinding(() -> row.get(j));
+                });
+                tableView.getColumns().add(column);
             }
-        } catch (IOException e) {
+
+            ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
+            while (rs.next()) {
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
+            tableView.setItems(data);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        column1.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[0]));
-        column2.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[1]));
-        column3.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[2]));
-        column4.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[3]));
-        column5.setCellValueFactory(param -> javafx.beans.binding.Bindings.createObjectBinding(() -> param.getValue()[4]));
-
         Button removeSelectedButton = new Button("Удалить запись");
         removeSelectedButton.setOnAction(event -> {
-            String[] selectedRecord = tableView.getSelectionModel().getSelectedItem();
+            ObservableList<String> selectedRecord = tableView.getSelectionModel().getSelectedItem();
             if (selectedRecord != null) {
                 tableView.getItems().remove(selectedRecord);
             }
         });
 
-        Button addInfoButton = new Button("Добавить больше вариантов");
-        addInfoButton.setOnAction(event -> {
-            String[] selectedRecord = tableView.getSelectionModel().getSelectedItem();
-            if (selectedRecord != null) {
-                    selectedRecord[0] = "1";
-                    selectedRecord[1] = "2";
-                    selectedRecord[2] = "3";
-                    selectedRecord[3] = "4";
-                    selectedRecord[4] = "5";
-
-                tableView.refresh();
-            }
-        });
-
-        VBox vbox = new VBox(tableView, removeSelectedButton, addInfoButton);
+        VBox vbox = new VBox(tableView, removeSelectedButton);
         Scene scene = new Scene(vbox, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Подходящие платы");
         primaryStage.show();
     }
-
-
 }
