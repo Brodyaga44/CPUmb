@@ -2,6 +2,7 @@ package com.example.cpumb;
 
 import com.example.cpumb.CPUgen.Gen;
 import com.example.cpumb.CPUgen.GenFabric;
+import com.example.cpumb.Singleton.Singleton;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
@@ -18,7 +19,9 @@ public class HelloApplication extends Application {
         Gen CPUgen = null;
         while (CPUgen == null) {
             CPUgen = genFabric.CPUtype(promptProcessorType());
-            if (CPUgen != null) {CPUgen.LoadMB(primaryStage);}
+            if (CPUgen != null) {
+                CPUgen.LoadMB(primaryStage);
+            }
             else {showErrorAlert("Неверный процессор!", "Введите другой процессор");}
         }
     }
@@ -26,8 +29,10 @@ public class HelloApplication extends Application {
     private String promptProcessorType() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Подбор материнской платы");
-        dialog.setHeaderText("Введите модель процессора (пока 10 или 12):");
+        dialog.setHeaderText("Введите модель процессора (10 12 13):");
         Optional<String> result = dialog.showAndWait();
+        Singleton Build = Singleton.getInstance();
+        Build.CPUname = result.orElse("");
         return result.orElse("").replaceAll("[^0-9]", "").substring(0, 2);
     }
 

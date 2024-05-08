@@ -4,6 +4,6 @@ import javafx.stage.Stage;
 
 public interface Gen {
     public void LoadMB(Stage primaryStage);
-    public void RAMselect();
+    public void RAMselect(Stage primaryStage);
 
 }
