@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.cpumb.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<VBox alignment="CENTER" prefHeight="619.0" prefWidth="1359.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cpumb.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <AnchorPane prefHeight="533.0" prefWidth="1319.0">
+      <children>
+         <WebView fx:id="WebViewer" layoutX="807.0" layoutY="54.0" prefHeight="436.0" prefWidth="445.0" />
+         <TableView fx:id="Database" layoutX="407.0" layoutY="49.0" prefHeight="436.0" prefWidth="338.0">
+         </TableView>
+         <Button fx:id="CPUshow" layoutX="294.0" layoutY="112.0" mnemonicParsing="false" onAction="#onCPU" text="Подобрать" />
+         <Button fx:id="MBshow" layoutX="294.0" layoutY="146.0" mnemonicParsing="false" onAction="#onMB" text="Подобрать" />
+         <Button fx:id="RAMshow" layoutX="294.0" layoutY="181.0" mnemonicParsing="false" onAction="#onRAM" prefHeight="25.0" prefWidth="77.0" text="Подобрать" />
+         <Button fx:id="addToConfig" layoutX="483.0" layoutY="494.0" mnemonicParsing="false" onAction="#onSelect" text="Добавить выбранное в сборку" />
+         <Button layoutX="238.0" layoutY="460.0" mnemonicParsing="false" onAction="#onSave" text="Сохранить сборку" />
+         <Button layoutX="84.0" layoutY="460.0" mnemonicParsing="false" onAction="#onClear" text="Очистить сборку" />
+         <TextField fx:id="ConfigCPU" editable="false" layoutX="222.0" layoutY="321.0" />
+         <TextField fx:id="ConfigMB" editable="false" layoutX="222.0" layoutY="366.0" />
+         <TextField fx:id="ConfigRAM" editable="false" layoutX="221.0" layoutY="410.0" />
+         <Label layoutX="204.0" layoutY="116.0" text="Процессоры" />
+         <Label layoutX="164.0" layoutY="150.0" text="Материнские платы" />
+         <Label layoutX="162.0" layoutY="185.0" text="Оперативная память" />
+         <Label layoutX="130.0" layoutY="325.0" text="Процессор" />
+         <Label layoutX="85.0" layoutY="370.0" text="Материнская плата" />
+         <Label layoutX="81.0" layoutY="414.0" text="Оперативная память" />
+         <Label layoutX="177.0" layoutY="291.0" text="ВАША СБОРКА" />
+         <Separator layoutX="-47.0" layoutY="272.0" prefHeight="0.0" prefWidth="454.0" />
+      </children>
+   </AnchorPane>
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
+    <Label fx:id="welcomeText" />
 </VBox>

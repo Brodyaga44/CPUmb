@@ -1,4 +1,4 @@
-package com.example.cpumb.SQL;
+package com.example.cpumb;
 
 import java.sql.*;
 

@@ -1,10 +1,15 @@
 package com.example.cpumb.Singleton;
 
+import com.example.cpumb.PC.CPU.CPUinfo;
+import com.example.cpumb.PC.MB.MBinfo;
+import com.example.cpumb.PC.RAM.RAMinfo;
+
+
 public class Singleton {
     private static Singleton instance;
-    public String CPUname;
-    public String MBName;
-    public String RAMName;
+    public CPUinfo CPUInfo;
+    public MBinfo BoardInfo;
+    public RAMinfo RAMInfo;
     public String RAMType;
 
     private Singleton() {
