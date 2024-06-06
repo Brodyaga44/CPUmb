@@ -43,13 +43,8 @@ public class Motherboard {
             tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     String[] MBdata = newSelection.toString().substring(1, newSelection.toString().length() - 1).split("\\s*,\\s*");
-                    System.out.println("==========MB========");
-                    System.out.println("Выбран текст: " + MBdata[MBdata.length-1]);
-                    System.out.println("Выбран текст: " + MBdata[MBdata.length-2]);
-                    System.out.println("Выбран текст z: " + MBdata[1]);
+
                     Build.BoardInfo = new MBinfo(MBdata[1],MBdata[MBdata.length-2],MBdata[MBdata.length-1]);
-                    for(String a:MBdata)
-                        System.out.println(a + " vot");
                     WebEngine we = wb.getEngine();
                     we.load("https://www.dns-shop.ru/search/?q=" + Build.BoardInfo.Name );
 

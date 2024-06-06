@@ -46,7 +46,6 @@ public class RAM {
             tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     String[] MBdata = newSelection.toString().substring(1, newSelection.toString().length() - 1).split("\\s*,\\s*");
-                    System.out.println("Выбран текст: " + MBdata[MBdata.length-1]);
                     Build.RAMInfo = new RAMinfo(MBdata[1],MBdata[MBdata.length-1]);
                     WebEngine we = wb.getEngine();
                     we.load("https://www.dns-shop.ru/search/?q=" + Build.RAMInfo.Name );

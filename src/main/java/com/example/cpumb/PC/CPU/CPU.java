@@ -38,8 +38,6 @@ public class CPU {
             ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
             tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    System.out.println("Выбран текст: " + newSelection.toString().split(",",2)[0].substring(1));
-                    System.out.println("Выбран текст: " + newSelection.toString().split(",",2)[1].split(",",2)[0].trim());
                     String CPUname = newSelection.toString().split(",",2)[0].substring(1);
                     String Socket = newSelection.toString().split(",",2)[1].split(",",2)[0].trim();
                     Build.CPUInfo = new CPUinfo(CPUname, Socket);
