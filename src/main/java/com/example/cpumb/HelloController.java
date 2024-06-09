@@ -38,12 +38,14 @@ public class HelloController {
     RAM RAM = new RAM();
     Singleton Build = Singleton.getInstance();
     int State = 0;
+    SearchConfig SC = new SearchConfig();
+    String SearchLink = SC.getLink();
 
     public void onCPU(ActionEvent actionEvent) {
         State = 0;
         Database.getItems().clear();
         Database.getColumns().clear();
-        CPU.LoadInfo(Database,WebViewer);
+        CPU.LoadInfo(Database,WebViewer,SearchLink);
 
     }
 
@@ -51,7 +53,7 @@ public class HelloController {
         State = 1;
         Database.getItems().clear();
         Database.getColumns().clear();
-        MB.LoadInfo(Database,WebViewer);
+        MB.LoadInfo(Database,WebViewer,SearchLink);
 
     }
 
@@ -59,7 +61,7 @@ public class HelloController {
         State = 2;
         Database.getItems().clear();
         Database.getColumns().clear();
-        RAM.LoadInfo(Database,WebViewer);
+        RAM.LoadInfo(Database,WebViewer,SearchLink);
     }
 
     public void onSelect(){
@@ -92,9 +94,9 @@ public class HelloController {
     public void onSave(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Window theStage = source.getScene().getWindow();
-        String text = "Ваш процессор: " + ConfigCPU.getText() + " https://www.dns-shop.ru/search/?q=" + ConfigCPU.getText()  +
-                      "\nВаша материнская плата: " + ConfigMB.getText() + " https://www.dns-shop.ru/search/?q=" + ConfigMB.getText()  +
-                      "\nВаша оперативная память: " + ConfigRAM.getText() +  " https://www.dns-shop.ru/search/?q=" + ConfigRAM.getText();
+        String text = "Ваш процессор: " + ConfigCPU.getText() + " "+ SearchLink + ConfigCPU.getText()  +
+                      "\nВаша материнская плата: " + ConfigMB.getText() + " " + SearchLink + ConfigMB.getText()  +
+                      "\nВаша оперативная память: " + ConfigRAM.getText() + " " +  SearchLink + ConfigRAM.getText();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Сохранить файл");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));

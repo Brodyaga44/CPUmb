@@ -1,6 +1,7 @@
 package com.example.cpumb.PC.CPU;
 
 import com.example.cpumb.Database;
+import com.example.cpumb.SearchConfig;
 import com.example.cpumb.Singleton.Singleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +19,7 @@ import java.sql.Statement;
 public class CPU {
     private final Database db = new Database();
     Singleton Build = Singleton.getInstance();
-    public void LoadInfo(TableView tableView, WebView wb) {
+    public void LoadInfo(TableView tableView, WebView wb, String SearchLink) {
         try (Connection con = db.getConnection()) {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM " + "\"CPU\"");
@@ -42,7 +43,7 @@ public class CPU {
                     String Socket = newSelection.toString().split(",",2)[1].split(",",2)[0].trim();
                     Build.CPUInfo = new CPUinfo(CPUname, Socket);
                     WebEngine we = wb.getEngine();
-                    we.load("https://www.dns-shop.ru/search/?q=" + Build.CPUInfo.Name );
+                    we.load(SearchLink + Build.CPUInfo.Name );
 
                 }
             });

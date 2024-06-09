@@ -1,6 +1,7 @@
 package com.example.cpumb.PC.MB;
 
 import com.example.cpumb.Database;
+import com.example.cpumb.SearchConfig;
 import com.example.cpumb.Singleton.Singleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ public class Motherboard {
     private final Database db = new Database();
     Singleton Build = Singleton.getInstance();
     ResultSet rs;
-    public void LoadInfo(TableView tableView, WebView wb) {
+    public void LoadInfo(TableView tableView, WebView wb, String SearchLink) {
         try (Connection con = db.getConnection()) {
             Statement stmt = con.createStatement();
             if (Build.CPUInfo == null) {
@@ -46,7 +47,7 @@ public class Motherboard {
 
                     Build.BoardInfo = new MBinfo(MBdata[1],MBdata[MBdata.length-2],MBdata[MBdata.length-1]);
                     WebEngine we = wb.getEngine();
-                    we.load("https://www.dns-shop.ru/search/?q=" + Build.BoardInfo.Name );
+                    we.load(SearchLink + Build.BoardInfo.Name );
 
                 }
             });

@@ -1,6 +1,7 @@
 package com.example.cpumb.PC.RAM;
 
 import com.example.cpumb.Database;
+import com.example.cpumb.SearchConfig;
 import com.example.cpumb.Singleton.Singleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,7 @@ public class RAM {
     private final Database db = new Database();
     Singleton Build = Singleton.getInstance();
     ResultSet rs;
-    public void LoadInfo(TableView tableView, WebView wb) {
+    public void LoadInfo(TableView tableView, WebView wb, String SearchLink) {
         try (Connection con = db.getConnection()) {
             Statement stmt = con.createStatement();
             if (Build.BoardInfo == null) {
@@ -48,7 +49,7 @@ public class RAM {
                     String[] MBdata = newSelection.toString().substring(1, newSelection.toString().length() - 1).split("\\s*,\\s*");
                     Build.RAMInfo = new RAMinfo(MBdata[1],MBdata[MBdata.length-1]);
                     WebEngine we = wb.getEngine();
-                    we.load("https://www.dns-shop.ru/search/?q=" + Build.RAMInfo.Name );
+                    we.load(SearchLink + Build.RAMInfo.Name );
 
                 }
             });
